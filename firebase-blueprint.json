@@ -1,0 +1,157 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Handcrafted or organic product catalog entry with reseller price support",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique product ID" },
+        "name": { "type": "string", "description": "English name of product" },
+        "nameBn": { "type": "string", "description": "Bengali name of product" },
+        "price": { "type": "number", "description": "Standard retail price" },
+        "resellerPrice": { "type": "number", "description": "Direct reseller wholesale price" },
+        "weight": { "type": "number", "description": "Estimated weight in kg, e.g. 0.5 or 1.5" },
+        "originalPrice": { "type": "number", "description": "Crossed out original price" },
+        "rating": { "type": "number", "description": "Average stars out of 5" },
+        "reviewsCount": { "type": "number", "description": "Total reviews" },
+        "category": { "type": "string", "description": "Product category ID" },
+        "categoryBn": { "type": "string", "description": "Product category translated" },
+        "image": { "type": "string", "description": "Primary image URL" },
+        "description": { "type": "string", "description": "English description" },
+        "descriptionBn": { "type": "string", "description": "Bengali description" },
+        "stock": { "type": "number", "description": "Items left in inventory" },
+        "soldCount": { "type": "number", "description": "Total items sold" }
+      },
+      "required": ["id", "name", "price", "resellerPrice"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer standard or reseller purchase order",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique system order ID" },
+        "date": { "type": "string", "description": "ISO date string" },
+        "items": { "type": "array", "description": "Cart items list" },
+        "total": { "type": "number", "description": "Total order charge" },
+        "shippingCharge": { "type": "number", "description": "Delivery fee" },
+        "shippingAddress": { "type": "object", "description": "Target address info" },
+        "paymentMethod": { "type": "string", "description": "COD or Mobile Banking" },
+        "orderNotes": { "type": "string", "description": "Special customer notes" },
+        "status": { "type": "string", "enum": ["Pending", "Shipped", "Delivered"] },
+        "statusBn": { "type": "string", "enum": ["অপেক্ষমাণ", "শিপড", "ডেলিভারড"] },
+        "isResellerOrder": { "type": "boolean", "description": "Whether order placed by a reseller" },
+        "resellerPhone": { "type": "string", "description": "Phone number of placing reseller" },
+        "customerPrice": { "type": "number", "description": "Price charged to end consumer by reseller" },
+        "packagingFee": { "type": "number", "description": "Calculated weight charge: 10 or 15 BDT" },
+        "commissionDeducted": { "type": "number", "description": "1% system tax subtracted from reseller's profit" },
+        "resellerProfit": { "type": "number", "description": "Calculated earnings for reseller" }
+      },
+      "required": ["id", "date", "items", "total"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User account profile for authentication and reseller portal access",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique system user ID" },
+        "name": { "type": "string", "description": "Full name" },
+        "email": { "type": "string", "description": "Email address" },
+        "phone": { "type": "string", "description": "Primary phone" },
+        "role": { "type": "string", "enum": ["customer", "reseller", "admin"] },
+        "status": { "type": "string", "enum": ["Active", "Blocked"] },
+        "walletBalance": { "type": "number", "description": "Earnings balance for resellers" }
+      },
+      "required": ["id", "phone", "role"]
+    },
+    "Voucher": {
+      "title": "Voucher",
+      "description": "Discount coupon code data",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "description": "Voucher text code in uppercase" },
+        "discount": { "type": "number", "description": "Deduction amount" },
+        "type": { "type": "string", "description": "Value type: flat or percentage" },
+        "description": { "type": "string", "description": "English explanation" },
+        "descriptionBn": { "type": "string", "description": "Bengali explanation" }
+      },
+      "required": ["code", "discount"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System broadcast notification or campaign banner",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "titleBn": { "type": "string" },
+        "message": { "type": "string" },
+        "date": { "type": "string" },
+        "type": { "type": "string" }
+      },
+      "required": ["id", "title"]
+    },
+    "Payout": {
+      "title": "Payout",
+      "description": "Reseller payout withdrawal request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "resellerPhone": { "type": "string" },
+        "amount": { "type": "number" },
+        "method": { "type": "string" },
+        "account": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Paid"] },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "resellerPhone", "amount"]
+    },
+    "ResellerApplication": {
+      "title": "ResellerApplication",
+      "description": "Signup request for prospective resellers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "shopName": { "type": "string" },
+        "bkashNumber": { "type": "string" },
+        "feeAmount": { "type": "number" },
+        "txnId": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Approved", "Rejected"] },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "phone", "txnId", "status"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Catalog of organic handcrafted products"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Shopping and reseller orders database"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Customer profiles, including reseller access levels"
+    },
+    "/vouchers/{voucherCode}": {
+      "schema": "Voucher",
+      "description": "Discount coupon codes cache"
+    },
+    "/notifications/{notifId}": {
+      "schema": "Notification",
+      "description": "Central notification system updates and campaigns"
+    },
+    "/payouts/{payoutId}": {
+      "schema": "Payout",
+      "description": "Reseller wallet balance cashout requests"
+    },
+    "/reseller_applications/{appId}": {
+      "schema": "ResellerApplication",
+      "description": "Incoming reseller registration requests"
+    }
+  }
+}
